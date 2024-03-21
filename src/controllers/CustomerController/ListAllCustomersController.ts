@@ -1,10 +1,10 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { ListAllCustomersService } from "../services/ListAllCustomersService";
-import { HttpCodes } from "../utils/HttpCodes";
+import { ListAllCustomersService } from "../../services/CustomerService/ListAllCustomersService";
+import { HttpCodes } from "../../utils/HttpCodes";
 
 
 class ListAllCustomersController {
-    async handle(request: FastifyRequest, reply: FastifyReply) {
+    async handle(request: FastifyRequest, reply: FastifyReply): Promise<void> {
     
         const listAllCustomersService = new ListAllCustomersService();
 

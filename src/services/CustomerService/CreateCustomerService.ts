@@ -1,12 +1,9 @@
-import prismaClient from "../prisma";
-
-interface CreateCustomerProps {
-    name: string;
-    email: string;
-}
+import { Customer } from "@prisma/client";
+import prismaClient from "../../db/prisma/client";
+import { CreateCustomerProps } from "../../interfaces/ICustomerService";
 
 class CreateCustomerService {
-    async execute({ name, email }: CreateCustomerProps) {        
+    async execute({ name, email }: CreateCustomerProps): Promise<Customer> {        
         
         if (!name || !email) {
             throw new Error("Preencha todos os campos");

@@ -1,25 +1,46 @@
-import Fastify, { FastifyError, FastifyReply, FastifyRequest } from "fastify";
+import Fastify, { FastifyError, FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { routes } from "./routes";
 import fastifyCors from "@fastify/cors";
 import { HttpCodes } from "./utils/HttpCodes";
+import dotenv from "dotenv";
 
-const app = Fastify({ logger: true});
+dotenv.config();
 
-app.setErrorHandler((error: FastifyError, request: FastifyRequest, reply: FastifyReply) => {
-    reply.code(HttpCodes.BAD_REQUEST).send({ message: error.message });
-})
+class Server {
+    private app: FastifyInstance;
 
-const server = async () => {
+    constructor() {
+        this.app = Fastify({ logger: true });
+        this.setupErrorHandler();
+        this.setupCors();
+        this.setupRoutes();
+    }
 
-    await app.register(fastifyCors);
-    await app.register(routes);
+    private setupErrorHandler(): void {
+        this.app.setErrorHandler((error: FastifyError, request: FastifyRequest, reply: FastifyReply) => {
+            reply.code(HttpCodes.BAD_REQUEST).send({ message: error.message });
+        });
+    }
 
-    try {
-        await app.listen({ port: 3333 });
-    } catch(err) {
-        process.exit(1);
+    private async setupCors(): Promise<void> {
+        await this.app.register(fastifyCors);
+    }
+
+    private async setupRoutes(): Promise<void> {
+        await this.app.register(routes);
+    }
+
+    public async start(): Promise<void> {
+        try {
+            const port = process.env.SERVER_PORT ? parseInt(process.env.SERVER_PORT, 10) : 3333;
+            await this.app.listen({ port });
+            console.log(`Server listening on port ${port}`);
+        } catch (err) {
+            console.error("Error starting server:", err);
+            process.exit(1);
+        }
     }
 }
 
-
-server();
+const server = new Server();
+server.start();
