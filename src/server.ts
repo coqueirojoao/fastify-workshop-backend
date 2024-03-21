@@ -1,5 +1,5 @@
 import Fastify, { FastifyError, FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
-import { routes } from "./routes";
+import { CustomerRoutes } from "./routes/CustomerRoutes";
 import fastifyCors from "@fastify/cors";
 import { HttpCodes } from "./utils/HttpCodes";
 import dotenv from "dotenv";
@@ -27,7 +27,7 @@ class Server {
     }
 
     private async setupRoutes(): Promise<void> {
-        await this.app.register(routes);
+        new CustomerRoutes(this.app).initializeRoutes();
     }
 
     public async start(): Promise<void> {
