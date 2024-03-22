@@ -1,8 +1,9 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { CreateCostumerController } from "../controllers/CustomerController/CreateCustomerController";
-import { ListAllCustomersController } from "../controllers/CustomerController/ListAllCustomersController";
+import { ListAllCustomersController } from "../controllers/CustomerController/ListAllCustomers/ListAllCustomersController";
 import { DeleteCustomerController } from "../controllers/CustomerController/DeleteCustomerController";
 import { UpdateCustomerController } from "../controllers/CustomerController/UpdateCustomerController";
+import { MongoListCustomersRepository } from "../services/CustomerService/MongoListCustomers/MongoListCustomersRepository";
 
 class CustomerRoutes {
     private fastify: FastifyInstance;
@@ -17,7 +18,7 @@ class CustomerRoutes {
         });
 
         this.fastify.get("/get-customers", async (request: FastifyRequest, reply: FastifyReply) => {
-            return new ListAllCustomersController().handle(request, reply);
+            return new ListAllCustomersController(new MongoListCustomersRepository()).handle(request, reply);
         });
 
         this.fastify.put("/update-customers", async (request: FastifyRequest, reply: FastifyReply) => {
