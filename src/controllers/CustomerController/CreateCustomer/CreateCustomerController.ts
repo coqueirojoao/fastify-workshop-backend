@@ -1,17 +1,15 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { CreateCustomerService } from "../../../services/CustomerService/CreateCustomerService";
 import { HttpCodes } from "../../../utils/HttpCodes";
-import { ICreateCustomerController } from "./Protocol";
+import { ICreateCustomerController, ICreateCustomerRepository } from "./Protocol";
 
 
 class CreateCostumerController implements ICreateCustomerController {
+    constructor(private readonly createCustomerRepository: ICreateCustomerRepository) {}
     async handle(request: FastifyRequest, reply: FastifyReply): Promise<void> {
 
         const { name, email } = request.body as { name: string, email: string };
 
-        const createCustomerService = new CreateCustomerService()
-
-        const customer = await createCustomerService.execute({ name, email });
+        const customer = await this.createCustomerRepository.create({ name, email });
 
 
         reply.code(HttpCodes.CREATED).send(customer);

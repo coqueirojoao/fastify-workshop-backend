@@ -1,5 +1,5 @@
 import { Customer } from "@prisma/client";
-import { IListAllCustomersRepository } from "../../../controllers/CustomerController/ListAllCustomers/Protocols";
+import { IListAllCustomersRepository } from "../../../controllers/CustomerController/ListAllCustomers/Protocol";
 import prismaClient from "../../../db/prisma/client";
 
 export class MongoListCustomersRepository implements IListAllCustomersRepository {

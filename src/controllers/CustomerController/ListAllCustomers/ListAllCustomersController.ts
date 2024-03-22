@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { HttpCodes } from "../../../utils/HttpCodes";
-import { IListAllCustomersController, IListAllCustomersRepository } from "./Protocols";
+import { IListAllCustomersController, IListAllCustomersRepository } from "./Protocol";
 
 
 class ListAllCustomersController implements IListAllCustomersController {
