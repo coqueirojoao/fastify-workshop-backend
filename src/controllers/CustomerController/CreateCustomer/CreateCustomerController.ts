@@ -1,9 +1,10 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { CreateCustomerService } from "../../services/CustomerService/CreateCustomerService";
-import { HttpCodes } from "../../utils/HttpCodes";
+import { CreateCustomerService } from "../../../services/CustomerService/CreateCustomerService";
+import { HttpCodes } from "../../../utils/HttpCodes";
+import { ICreateCustomerController } from "./Protocol";
 
 
-class CreateCostumerController {
+class CreateCostumerController implements ICreateCustomerController {
     async handle(request: FastifyRequest, reply: FastifyReply): Promise<void> {
 
         const { name, email } = request.body as { name: string, email: string };
